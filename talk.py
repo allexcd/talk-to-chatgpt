@@ -87,18 +87,18 @@ def print_colored(agent, text):
 
 voice_id = 'XrExE9yKIg1WjnnlVkGX'
 
-def record_and_transcribe(duration=5, fs=44100):
-    print('Recording...')
-    myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=1)
-    sd.wait()
-    print('Recording complete.')
-    filename = 'myrecording.wav'
-    sf.write(filename, myrecording, fs)
-    with open(filename, "rb") as file:
-        openai.api_key = api_key
-        result = openai.Audio.transcribe("whisper-1", file)
-    transcription = result['text']
-    return transcription
+# def record_and_transcribe(duration=5, fs=44100):
+#     print('Recording...')
+#     myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=1)
+#     sd.wait()
+#     print('Recording complete.')
+#     filename = 'myrecording.wav'
+#     sf.write(filename, myrecording, fs)
+#     with open(filename, "rb") as file:
+#         openai.api_key = api_key
+#         result = openai.Audio.transcribe("whisper-1", file)
+#     transcription = result['text']
+#     return transcription
 
 def record_and_transcript_local_whisper(duration=5, fs=44100):
     print('Recording...')

@@ -19,6 +19,9 @@
 4. Set Your Eleven Labs Voice ID under `voice_id` variable in `talk.py` script
 5. Customize your chatbot.txt
 6. Run talk.py
+   1. open zshrc file by runnin in terminal: `nano ~/.zshrc`
+   2. add this line: `alias voicegpt="python /Users/alexandru.dumitru/workspaces/talk-to-chatgpt/talk.py"`
+   3. go to terminal and run `voicegpt`
 
 ## Resources
 Eleven Labs API Documentation: https://api.elevenlabs.io/docs#/voices/Get_voices_v1_voices_get

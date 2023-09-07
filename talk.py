@@ -6,6 +6,7 @@ import whisper
 import os
 import requests
 import re
+import sys
 from colorama import Fore, Style, init
 from pydub import AudioSegment
 from pydub.playback import play
@@ -33,6 +34,14 @@ try:
         elapikey = elapikey_file.read().strip()
 except FileNotFoundError:
     print("One or both files not found.")
+
+if __name__ == "__main__":
+    # Check if there are enough arguments provided
+    if len(sys.argv) < 2:
+        # Usage: voicegpt <docx_file_path>
+        sys.exit(1)
+
+docx_file_path = sys.argv[1]
 
 conversation = []
 with open(chatbot_path, 'r') as chatbot_file:
@@ -134,7 +143,7 @@ while True:
     print_colored("Matilda:", f"{response}\n\n")
     
     # write it in a document
-    save_as_docx(f"{response}\n\n", "/Users/alexcd/Documents/discussion.docx");
+    save_as_docx(f"{response}\n\n", docx_file_path);
     
     user_message_without_generate_image = re.sub(r'(Response:|Narration:|Image: generate_image:.*|)', '', response).strip()
     text_to_speech(user_message_without_generate_image, voice_id, elapikey)

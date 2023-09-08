@@ -37,7 +37,7 @@ except FileNotFoundError:
 
 if __name__ == "__main__":
     # Check if there are enough arguments provided
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 1:
         # Usage: voicegpt <docx_file_path>
         sys.exit(1)
 
@@ -94,20 +94,20 @@ def print_colored(agent, text):
     color = agent_colors.get(agent, "")
     print(color + f"{agent}: {text}" + Style.RESET_ALL, end="")
 
-voice_id = 'XrExE9yKIg1WjnnlVkGX'
+voice_id = 'EXAVITQu4vr4xnSDxMaL'
 
-# def record_and_transcribe(duration=5, fs=44100):
-#     print('Recording...')
-#     myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=1)
-#     sd.wait()
-#     print('Recording complete.')
-#     filename = 'myrecording.wav'
-#     sf.write(filename, myrecording, fs)
-#     with open(filename, "rb") as file:
-#         openai.api_key = api_key
-#         result = openai.Audio.transcribe("whisper-1", file)
-#     transcription = result['text']
-#     return transcription
+def record_and_transcribe(duration=5, fs=44100):
+    print('Recording...')
+    myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=1)
+    sd.wait()
+    print('Recording complete.')
+    filename = 'myrecording.wav'
+    sf.write(filename, myrecording, fs)
+    with open(filename, "rb") as file:
+        openai.api_key = api_key
+        result = openai.Audio.transcribe("whisper-1", file)
+    transcription = result['text']
+    return transcription
 
 def record_and_transcript_local_whisper(duration=5, fs=44100):
     print('Recording...')
@@ -137,6 +137,7 @@ def save_as_docx(text, filename):
     doc.save(filename)
 
 while True:
+    print('running')
     # user_message = record_and_transcribe()
     user_message = record_and_transcript_local_whisper();
     response = chatgpt(api_key, conversation, chatbot, user_message)

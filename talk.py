@@ -12,6 +12,9 @@ from pydub import AudioSegment
 from pydub.playback import play
 from docx import Document
 
+# import the required modules for text to speech conversion
+from gtts import gTTS
+
 init()
 
 # Get the directory of the currently running script
@@ -23,15 +26,12 @@ def open_file(filepath):
 
 # Construct the absolute paths to the files in the same directory as the script
 api_key_path = os.path.join(script_directory, '_openai_apikey.txt')
-elapikey_path = os.path.join(script_directory, '_elabs_apikey.txt')
 chatbot_path = os.path.join(script_directory, '_chatbot.txt')
 
 # Open the files using these paths
 try:
     with open(api_key_path, 'r') as api_key_file:
         api_key = api_key_file.read().strip()
-    with open(elapikey_path, 'r') as elapikey_file:
-        elapikey = elapikey_file.read().strip()
 except FileNotFoundError:
     print("One or both files not found.")
 
@@ -63,29 +63,16 @@ def chatgpt(api_key, conversation, chatbot, user_input, temperature=0, frequency
     conversation.append({"role": "assistant", "content": chat_response})
     return chat_response
 
-def text_to_speech(text, voice_id, api_key):
-    url = f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}'
-    headers = {
-        'Accept': 'audio/mpeg',
-        'xi-api-key': api_key,
-        'Content-Type': 'application/json'
-    }
-    data = {
-        'text': text,
-        'model_id': 'eleven_monolingual_v1',
-        'voice_settings': {
-            'stability': 0.6,
-            'similarity_boost': 0.85
-        }
-    }
-    response = requests.post(url, headers=headers, json=data)
-    if response.status_code == 200:
-        with open('output.mp3', 'wb') as f:
-            f.write(response.content)
-        audio = AudioSegment.from_mp3('output.mp3')
-        play(audio)
-    else:
-        print('Error:', response.text)
+def text_to_speech(myText, voice_id):
+    # passing the text and language to the engine
+    # slow=False tells the module that the converted audio should have high speed
+    audioFile = gTTS(text=myText, lang=voice_id, slow=False)
+
+    # saving the converted audio to an mp3 file
+    audioFile.save("output.mp3")
+
+    # play the response as an audio file
+    os.system("mpg321 output.mp3")
 
 def print_colored(agent, text):
     agent_colors = {
@@ -147,5 +134,5 @@ while True:
     save_as_docx(f"{response}\n\n", docx_file_path);
     
     user_message_without_generate_image = re.sub(r'(Response:|Narration:|Image: generate_image:.*|)', '', response).strip()
-    text_to_speech(user_message_without_generate_image, voice_id, elapikey)
+    text_to_speech(user_message_without_generate_image, "en")
     

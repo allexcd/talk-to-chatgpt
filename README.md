@@ -10,6 +10,8 @@
         Play and Record sound with Python
     - pip install soundfile
         The soundfile module can read and write sound files
+    - pip install gTTS. See: https://github.com/pndurette/gTTS/issues/31 for a list of language codes. Using different language codes also changes the voice type
+    - brew install mpg321
 2. Set Your OpenAI API Key in openaiapikey.txt
 3. Set Your Eleven Labs API in elabaiapikey.txt. This should be found once you login in Eleven Labs, under Profile section
 4. Go to https://api.elevenlabs.io/docs#/voices/Get_voices_v1_voices_get
